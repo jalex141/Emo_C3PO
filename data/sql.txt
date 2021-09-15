@@ -1,0 +1,82 @@
+-- MySQL Workbench Forward Engineering
+
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+
+-- -----------------------------------------------------
+-- Schema mydb
+-- -----------------------------------------------------
+
+-- -----------------------------------------------------
+-- Schema mydb
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `mydb` DEFAULT CHARACTER SET utf8 ;
+USE `mydb` ;
+
+-- -----------------------------------------------------
+-- Table `mydb`.`episodes`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`episodes` (
+  `ep_id` INT NOT NULL AUTO_INCREMENT,
+  `episode` VARCHAR(45) NULL,
+  PRIMARY KEY (`ep_id`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`characters`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`characters` (
+  `char_id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(45) NULL,
+  PRIMARY KEY (`char_id`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`memes`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`memes` (
+  `meme_id` INT NOT NULL AUTO_INCREMENT,
+  `meme` VARCHAR(45) NULL,
+  PRIMARY KEY (`meme_id`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`lines`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`lines` (
+  `line_id` INT NOT NULL AUTO_INCREMENT,
+  `line_n` INT NULL,
+  `char_id` VARCHAR(45) NULL,
+  `line` MEDIUMTEXT NOT NULL,
+  `episodes_ep_id` INT NULL,
+  `characters_char_id` INT NOT NULL,
+  `memes_meme_id` INT NOT NULL,
+  PRIMARY KEY (`line_id`),
+  INDEX `fk_lines_episodes_idx` (`episodes_ep_id` ASC) VISIBLE,
+  INDEX `fk_lines_characters1_idx` (`characters_char_id` ASC) VISIBLE,
+  INDEX `fk_lines_memes1_idx` (`memes_meme_id` ASC) VISIBLE,
+  CONSTRAINT `fk_lines_episodes`
+    FOREIGN KEY (`episodes_ep_id`)
+    REFERENCES `mydb`.`episodes` (`ep_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_lines_characters1`
+    FOREIGN KEY (`characters_char_id`)
+    REFERENCES `mydb`.`characters` (`char_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_lines_memes1`
+    FOREIGN KEY (`memes_meme_id`)
+    REFERENCES `mydb`.`memes` (`meme_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
