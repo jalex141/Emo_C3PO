@@ -1,45 +1,45 @@
 import sqlalchemy as alch
+import pandas as pd
 from getpass import getpass
 #from import tools.sql_tools as sql
-
-password = getpass("Introduce tu pass de sql: ")
-dbName="starwars"
-connectionData=f"mysql+pymysql://root:{password}@localhost/{dbName}"
-engine = alch.create_engine(connectionData)
-print(f"me conecté a {dbName}")
+from config.configuration import engine
 
 
-def check(que,string):
+
+
+def check(what,string):
     """
-    Función parametrizada que comprueba en cada tabla si existe el user, artista o canción.
-    Devuelve True si existe y False si no
+    recieves a table name and a string
+    returns True if 'string' exists in table name and False if not
     """
-    if que == "characters":
+    if what == "characters":
         query = list(engine.execute(f"SELECT name FROM characters WHERE name = '{string}'"))
         if len(query) > 0:
             return True
         else:
             return False
         
-    elif que == "script":
+    elif what == "script":
         query = list(engine.execute(f"SELECT script_l FROM script WHERE script_l = '{string}'"))
         if len(query) > 0:
             return True
         else:
             return False
     
-    elif que == "episodes":
+    elif what == "episodes":
         query = list(engine.execute(f"SELECT episode FROM episodes WHERE episode = '{string}'"))
         if len(query) > 0:
             return True
         else:
             return False
+    #extra meme..
 
 
 def insertCharacter(string):
     """
-    Llama a la función check para comprobar si existe el ironhacker
-    Inserta ironhacker si no existe
+    calls check function and inserts the character if it does not exist
+    recieves a string
+    inserts a character
     """
     if check("character", string):
         return "character exists"
@@ -49,29 +49,33 @@ def insertCharacter(string):
 
 def insertEpisode(ep):
     """
-    Llama a la función check para comprobar si existe el artista
-    Inserta artista si no existe
+    does the same as insertCharcter for Episode number
     """
     if check("episodes", ep):
         return "episode exists"
     else:
         engine.execute(f"INSERT INTO episodes (episode) VALUES ('{ep}');")
 
-def giveId(que,string):
+def giveId(what,string):
     """
-    Devuelve el ID de lo que le pidamos sabiendo que ese elemento EXISTE
+    used only when the string exist in a table 
+    recieves a table name and a string
+    returns the ID of string in a table
     """
-    if que == "characters":
+    if what == "characters":
         return list(engine.execute(f"SELECT char_id FROM characters WHERE name ='{string}';"))[0][0]
-    elif que == "episodes":
+    elif what == "episodes":
         return list(engine.execute(f"SELECT ep_id FROM episodes WHERE episode ='{string}';"))[0][0]
 
 
 def insertLine(row):
     """
-    La función final 
+    checks for existing items in the database tables, gets id's for the main table
+    insets the data in the specific tables
+    recieves a row of data
+    inserts into a database
     """
-    if check("script", row["dialogue"]):
+    if check("script", row["dialogue"]) and check("characters", row["character"]) and  check("episodes", row["episode"]):
         return "line exists"
     else:
         if check("characters", row["character"]):
@@ -85,13 +89,18 @@ def insertLine(row):
         else:
             insertEpisode(row["episode"])
             ep_id = giveId("episodes", row["episode"])
-        
+        #meme optional insert somehow
         meme_id = 0
         engine.execute(f"""
         INSERT INTO script (line_n, script_l, characters_char_id, episodes_ep_id) VALUES
         ("{row['line']}", "{row['dialogue']}", "{char_id}", "{ep_id}");
         """)
-
 def insertLines(data):
-    for index,row in data.iterrows():
+    """
+    applies insertline iterating through a dataset 
+    recieves a dataset
+    loads said data to sql database
+    """
+    data = pd.DataFrame(data)
+    for _,row in data.iterrows():
         insertLine(row)

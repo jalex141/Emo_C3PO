@@ -28,13 +28,16 @@ def download_dataset():
     make_directory = "mkdir data"
     lista = "ls >> archivos.txt"
     
-    for i in [download, decompress, delete, lista]:
+    for i in [download, decompress, delete, make_directory, lista]:
         os.system(i)
     
     #Move the csv to uour data folder
     for file in list("./archivos.txt"):
+        read_file = pd.read_csv ('../SW_EpisodeIV.txt', sep= " ")
+        read_file.to_csv ('./data/SW_EpisodeVI.csv', index=None)
         os.system(f"mv *.csv ./data/{file}")
         f"{file}>> archivos_csv.txt"
     return None
 
 download_dataset()
+
