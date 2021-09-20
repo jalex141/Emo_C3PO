@@ -4,15 +4,15 @@
 
 welcome to the api where you can get your share of star wars lines.. the good stuff episodes IV to VI and maaybe the prequels,  none of that sjw bullshit that came after
 
-### Endpoints
-#### /lines/'name'
+## Endpoints
+### /lines/'name'
 to recieve all the lines from a specific character 
 
-#### /all_lines
+### /all_lines
 just in case you want all of it
 
-####  /newline
+###  /newline
 to insert a line into the db I might have missed a few
 
-#### /newlines
+### /newlines
 the same but with lots of lines in a neat json
