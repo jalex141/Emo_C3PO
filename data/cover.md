@@ -8,8 +8,15 @@ welcome to the api where you can get your share of star wars lines.. the good st
 ### /lines/'name'
 to recieve all the lines from a specific character 
 
+### /lines/'name'/'episode'
+To filter by episode as well
+
+### /wmap/'name'
+recieve a wordcloud from a character lines
+
 ### /all_lines
-just in case you want all of it
+just in case you want all of it,   the full database
+
 
 ###  /newline
 to insert a line into the db I might have missed a few

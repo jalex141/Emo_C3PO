@@ -39,7 +39,7 @@ def insertCharacter(string):
     """
     calls check function and inserts the character if it does not exist
     recieves a string
-    inserts a character
+    inserts a character in the db
     """
     if check("character", string):
         return "character exists"
@@ -49,7 +49,7 @@ def insertCharacter(string):
 
 def insertEpisode(ep):
     """
-    does the same as insertCharcter for Episode number
+    does the same as insertCharcter for Episodes
     """
     if check("episodes", ep):
         return "episode exists"
@@ -90,7 +90,7 @@ def insertLine(row):
             insertEpisode(row["episode"])
             ep_id = giveId("episodes", row["episode"])
         #meme optional insert somehow
-        meme_id = 0
+        #meme_id = 0
         engine.execute(f"""
         INSERT INTO script (line_n, script_l, characters_char_id, episodes_ep_id) VALUES
         ("{row['line']}", "{row['dialogue']}", "{char_id}", "{ep_id}");
