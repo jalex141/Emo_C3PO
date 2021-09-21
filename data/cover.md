@@ -14,6 +14,15 @@ To filter by episode as well
 ### /wmap/'name'
 recieve a wordcloud from a character lines
 
+### /wmap/'name'/'episode'
+returns a wordcloud from that character lines in that episode
+
+### /sent
+returns a json with the NLTK compound vaules for sentiment
+
+### sent/'name'
+returns a json with the NLTK compound mean value for sentimentof a character
+
 ### /all_lines
 just in case you want all of it,   the full database
 
@@ -23,3 +32,6 @@ to insert a line into the db I might have missed a few
 
 ### /newlines
 the same but with lots of lines in a neat json
+
+### /balance/'string'
+returns a image depending on the sentiment of the string
